@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Transformation : MonoBehaviour
 {
@@ -12,15 +13,23 @@ public class Transformation : MonoBehaviour
 
     public bool IsTransformed  => _isTransformed;
 
+    public UnityAction<bool> Transformed;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
             _isTransformed = !_isTransformed;
+            Transformed?.Invoke(_isTransformed);
 
-            _animator.SetBool("IsTransformed", _isTransformed);
-            _animator.SetTrigger("Transform");
-            _cameraAnimator.SetTrigger("Switch");
+            Animate();
         }
+    }
+
+    private void Animate()
+    {
+        _animator.SetBool("IsTransformed", _isTransformed);
+        _animator.SetTrigger("Transform");
+        _cameraAnimator.SetTrigger("Switch");
     }
 }
