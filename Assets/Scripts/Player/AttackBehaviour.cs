@@ -20,27 +20,6 @@ public class AttackBehaviour : MonoBehaviour
         //Cursor.visible = false;
     }
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0) && _transformation.IsTransformed)
-        {
-            _animator.SetTrigger("Attack");
-
-            StopCoroutine(PlayHitEffects());
-            StartCoroutine(PlayHitEffects());
-
-            if (_enemies.Count > 0)
-            {
-                for (int i = 0; i < _enemies.Count; i++)
-                {
-                    _enemies[i].Kill();
-                    EnemyKilled?.Invoke();
-                }
-                _enemies.Clear();
-            }
-        }
-    }
-
     private IEnumerator PlayHitEffects()
     {
         yield return new WaitForSeconds(0.4f);
@@ -69,6 +48,27 @@ public class AttackBehaviour : MonoBehaviour
         if (other.TryGetComponent<Enemy>(out Enemy enemy))
         {            
             _enemies.Remove(enemy);
+        }
+    }
+
+    public void Attack()
+    {
+        if (_transformation.IsTransformed)
+        {
+            _animator.SetTrigger("Attack");
+
+            StopCoroutine(PlayHitEffects());
+            StartCoroutine(PlayHitEffects());
+
+            if (_enemies.Count > 0)
+            {
+                for (int i = 0; i < _enemies.Count; i++)
+                {
+                    _enemies[i].Kill();
+                    EnemyKilled?.Invoke();
+                }
+                _enemies.Clear();
+            }
         }
     }
 }

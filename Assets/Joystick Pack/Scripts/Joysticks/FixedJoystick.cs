@@ -17,18 +17,17 @@ public class FixedJoystick : Joystick
         inputVector = (direction.magnitude > background.sizeDelta.x / 2f) ? direction.normalized : direction / (background.sizeDelta.x / 2f);
         ClampJoystick();
         handle.anchoredPosition = (inputVector * background.sizeDelta.x / 2f) * handleDistance;
-
-        Debug.Log("Horizontal " + Horizontal);
-        Debug.Log("Vertical " + Vertical);
     }
 
     public override void OnPointerDown(PointerEventData eventData)
     {
+        IsUsed = true;
         OnDrag(eventData);
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
+        IsUsed = false;
         inputVector = Vector2.zero;
         handle.anchoredPosition = Vector2.zero;
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Detection _detection;
 
     private Coroutine coroutine;
+
+    public UnityAction<Enemy> Died;
 
     public void Kill()
     {
@@ -23,6 +26,7 @@ public class Enemy : MonoBehaviour
             _detection.enabled = false;
 
         yield return new WaitForSeconds(2f);
+        Died?.Invoke(this);
         gameObject.SetActive(false);
     }
 }

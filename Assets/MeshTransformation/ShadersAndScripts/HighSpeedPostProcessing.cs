@@ -6,7 +6,7 @@ using UnityEditor;
 public class HighSpeedPostProcessing : MonoBehaviour
 {
     [Header("ToneMapping")]
-    [Range(0, 1)]
+    [Range(0, 5)]
     public float PostExposure = 2.2f;
     public float Contrast = 1.5f;
     [Range(0, 1)]

@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 // This class corresponds to the 3rd person camera features.
-public class ThirdPersonOrbitCamBasic : MonoBehaviour 
+public class ThirdPersonOrbitCamBasic : MonoBehaviour
 {
 	public Transform player;                                           // Player's reference.
+	public Joystick joystick;                                           // Player's reference.
 	public Vector3 pivotOffset = new Vector3(0.0f, 1.7f,  0.0f);       // Offset to repoint the camera.
 	public Vector3 camOffset   = new Vector3(0.0f, 0.0f, -3.0f);       // Offset to relocate the camera related to the player position.
 	public float smooth = 10f;                                         // Speed of camera responsiveness.
-	public float horizontalAimingSpeed = 6f;                           // Horizontal turn speed.
-	public float verticalAimingSpeed = 6f;                             // Vertical turn speed.
+	public float horizontalAimingSpeed = 2f;                           // Horizontal turn speed.
+	public float verticalAimingSpeed = 2f;                             // Vertical turn speed.
 	public float maxVerticalAngle = 30f;                               // Camera max clamp angle. 
 	public float minVerticalAngle = -60f;                              // Camera min clamp angle.
 	public string XAxis = "Analog X";                                  // The default horizontal axis input name.
@@ -31,6 +33,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 
 	void Awake()
 	{
+		Input.multiTouchEnabled = true;
 		// Reference to the camera transform.
 		cam = transform;
 
@@ -58,17 +61,28 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	{
 		// Get mouse movement to orbit the camera.
 		// Mouse:
-		angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1) * horizontalAimingSpeed;
-		angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1) * verticalAimingSpeed;
-		// Joystick:
-		angleH += Mathf.Clamp(Input.GetAxis(XAxis), -1, 1) * 60 * horizontalAimingSpeed * Time.deltaTime;
-		angleV += Mathf.Clamp(Input.GetAxis(YAxis), -1, 1) * 60 * verticalAimingSpeed * Time.deltaTime;
+		//angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1) * horizontalAimingSpeed;
+		//angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1) * verticalAimingSpeed;
+		//// Joystick:
+		//angleH += Mathf.Clamp(Input.GetAxis(XAxis), -1, 1) * 60 * horizontalAimingSpeed * Time.deltaTime;
+		//angleV += Mathf.Clamp(Input.GetAxis(YAxis), -1, 1) * 60 * verticalAimingSpeed * Time.deltaTime;
+
+		if (Input.touchCount > 0 && !joystick.IsUsed)
+		{
+			angleH += Input.GetTouch(0).deltaPosition.x * horizontalAimingSpeed * Time.deltaTime;
+			angleV += Input.GetTouch(0).deltaPosition.y * verticalAimingSpeed * Time.deltaTime;
+		}
+		else if (Input.touchCount > 1 && joystick.IsUsed)
+        {
+			angleH += Input.GetTouch(1).deltaPosition.x * horizontalAimingSpeed * Time.deltaTime;
+			angleV += Input.GetTouch(1).deltaPosition.y * verticalAimingSpeed * Time.deltaTime;
+		}
 
 		// Set vertical movement limit.
 		angleV = Mathf.Clamp(angleV, minVerticalAngle, targetMaxVerticalAngle);
 
 		// Set camera orientation.
-		Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
+		Quaternion camYRotation = Quaternion.AngleAxis(angleH, Vector3.up);
 		Quaternion aimRotation = Quaternion.Euler(-angleV, angleH, 0);
 		cam.rotation = aimRotation;
 

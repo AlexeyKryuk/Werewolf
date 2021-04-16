@@ -17,6 +17,7 @@ public class Joystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointer
     public float Horizontal { get { return inputVector.x; } }
     public float Vertical { get { return inputVector.y; } }
     public Vector2 Direction { get { return new Vector2(Horizontal, Vertical); } }
+    public bool IsUsed { get; protected set; }
 
     public virtual void OnDrag(PointerEventData eventData)
     {
