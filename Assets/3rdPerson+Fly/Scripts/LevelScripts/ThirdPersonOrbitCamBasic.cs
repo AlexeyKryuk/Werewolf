@@ -59,24 +59,16 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 
 	void Update()
 	{
-		// Get mouse movement to orbit the camera.
-		// Mouse:
-		//angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1) * horizontalAimingSpeed;
-		//angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1) * verticalAimingSpeed;
-		//// Joystick:
-		//angleH += Mathf.Clamp(Input.GetAxis(XAxis), -1, 1) * 60 * horizontalAimingSpeed * Time.deltaTime;
-		//angleV += Mathf.Clamp(Input.GetAxis(YAxis), -1, 1) * 60 * verticalAimingSpeed * Time.deltaTime;
-
-		if (Input.touchCount > 0 && !joystick.IsUsed)
-		{
-			angleH += Input.GetTouch(0).deltaPosition.x * horizontalAimingSpeed * Time.deltaTime;
-			angleV += Input.GetTouch(0).deltaPosition.y * verticalAimingSpeed * Time.deltaTime;
-		}
-		else if (Input.touchCount > 1 && joystick.IsUsed)
-        {
-			angleH += Input.GetTouch(1).deltaPosition.x * horizontalAimingSpeed * Time.deltaTime;
-			angleV += Input.GetTouch(1).deltaPosition.y * verticalAimingSpeed * Time.deltaTime;
-		}
+		//if (Input.touchCount > 0 && !joystick.IsUsed)
+		//{
+		//	angleH += Input.GetTouch(0).deltaPosition.x * horizontalAimingSpeed * Time.deltaTime;
+		//	angleV += Input.GetTouch(0).deltaPosition.y * verticalAimingSpeed * Time.deltaTime;
+		//}
+		//else if (Input.touchCount > 1 && joystick.IsUsed)
+  //      {
+		//	angleH += Input.GetTouch(1).deltaPosition.x * horizontalAimingSpeed * Time.deltaTime;
+		//	angleV += Input.GetTouch(1).deltaPosition.y * verticalAimingSpeed * Time.deltaTime;
+		//}
 
 		// Set vertical movement limit.
 		angleV = Mathf.Clamp(angleV, minVerticalAngle, targetMaxVerticalAngle);

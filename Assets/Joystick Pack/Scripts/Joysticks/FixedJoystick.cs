@@ -11,6 +11,13 @@ public class FixedJoystick : Joystick
         joystickPosition = RectTransformUtility.WorldToScreenPoint(cam, background.position);
     }
 
+    private void OnDisable()
+    {
+        IsUsed = false;
+        inputVector = Vector2.zero;
+        handle.anchoredPosition = Vector2.zero;
+    }
+
     public override void OnDrag(PointerEventData eventData)
     {
         Vector2 direction = eventData.position - joystickPosition;

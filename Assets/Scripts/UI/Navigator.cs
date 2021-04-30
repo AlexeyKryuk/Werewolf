@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class Navigator : MonoBehaviour
 {
-    private List<Transform> _targets = new List<Transform>();
-    private Transform _currentTarget;
+    private List<Victim> _targets = new List<Victim>();
+
+    public Victim CurrentTarget { get; private set; }
 
     private void OnEnable()
     {
-        foreach (var enemy in FindObjectsOfType<Enemy>())
+        foreach (var victim in FindObjectsOfType<Victim>())
         {
-            _targets.Add(enemy.transform);
-            enemy.Died += RemoveTarget;
+            _targets.Add(victim);
+            victim.Died += RemoveTarget;
         }
 
-        _currentTarget = _targets[0];
+        CurrentTarget = _targets[0];
     }
 
     private void Start()
@@ -25,37 +26,40 @@ public class Navigator : MonoBehaviour
 
     private void Update()
     {
-        transform.LookAt(_currentTarget);
+        if (CurrentTarget != null)
+        {
+            transform.LookAt(CurrentTarget.transform);
+            transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+        }
     }
 
     private IEnumerator SelectTarget()
     {
         while (_targets.Count > 0)
         {
-            float minDistance = Vector3.Distance(transform.position, _targets[0].position);
+            float minDistance = Vector3.Distance(transform.position, _targets[0].transform.position);
             int nearestTargetIndex = 0;
 
             for (int i = 1; i < _targets.Count; i++)
             {
-                if (minDistance > Vector3.Distance(transform.position, _targets[i].position))
+                if (minDistance > Vector3.Distance(transform.position, _targets[i].transform.position))
                 {
-                    minDistance = Vector3.Distance(transform.position, _targets[i].position);
+                    minDistance = Vector3.Distance(transform.position, _targets[i].transform.position);
                     nearestTargetIndex = i;
                 }
             }
 
-            _currentTarget = _targets[nearestTargetIndex];
+            CurrentTarget = _targets[nearestTargetIndex];
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
-    private void RemoveTarget(Enemy target)
+    private void RemoveTarget(Victim target)
     {
-        if (_currentTarget == target.transform)
+        if (CurrentTarget == target)
         {
-            _targets.Remove(target.transform);
-            _currentTarget = _targets[0];
+            _targets.Remove(target);
         }
     }
 }

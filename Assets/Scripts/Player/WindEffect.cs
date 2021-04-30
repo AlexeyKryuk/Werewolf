@@ -2,28 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(TrailRenderer))]
 public class WindEffect : MonoBehaviour
 {
-    [SerializeField] private Transformation _playerTransform;
+    [SerializeField] private TrailRenderer[] _trails;
 
-    private TrailRenderer _trail;
-
-    private void Awake()
+    public void OnEnable()
     {
-        _trail = GetComponent<TrailRenderer>();
-        _trail.enabled = false;
+        foreach (var line in _trails)
+        {
+            line.enabled = true;
+        }
     }
 
-    private void Update()
+    public void OnDisable()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && _playerTransform.IsTransformed)
+        foreach (var line in _trails)
         {
-            _trail.enabled = true;
-        }
-        else
-        {
-            _trail.enabled = false;
+            line.enabled = false;
         }
     }
 }

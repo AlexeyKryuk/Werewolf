@@ -18,6 +18,8 @@ public class ThermalVision : MonoBehaviour
         {
             _defaultMaterials[i] = _renderers[i].material;
         }
+
+        ChangeMaterial(true);
     }
 
     private void OnEnable()
@@ -43,7 +45,7 @@ public class ThermalVision : MonoBehaviour
 
     private IEnumerator ChangeMaterial(Material target)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
 
         for (int i = 0; i < _renderers.Length; i++)
         {
@@ -53,7 +55,7 @@ public class ThermalVision : MonoBehaviour
 
     private IEnumerator ChangeMaterial(Material[] targets)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
 
         for (int i = 0; i < _renderers.Length; i++)
         {

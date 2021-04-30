@@ -31,6 +31,7 @@ public class MoveBehaviour : GenericBehaviour
 		speedSeeker = runSpeed;
 	}
 
+
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
@@ -140,7 +141,8 @@ public class MoveBehaviour : GenericBehaviour
 	Vector3 Rotating(float horizontal, float vertical)
 	{
 		// Get camera forward direction, without vertical component.
-		Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
+		//Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
+		Vector3 forward = new Vector3(horizontal, 0f, vertical);
 
 		// Player is moving on ground, Y component of camera facing is not relevant.
 		forward.y = 0.0f;
@@ -149,7 +151,8 @@ public class MoveBehaviour : GenericBehaviour
 		// Calculate target direction based on camera forward and direction key.
 		Vector3 right = new Vector3(forward.z, 0, -forward.x);
 		Vector3 targetDirection;
-		targetDirection = forward * vertical + right * horizontal;
+		//targetDirection = forward * vertical + right * horizontal;
+		targetDirection = new Vector3(horizontal, 0f, vertical);
 
 		// Lerp current direction to calculated target direction.
 		if ((behaviourManager.IsMoving() && targetDirection != Vector3.zero))

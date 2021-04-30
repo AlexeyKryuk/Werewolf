@@ -3,33 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Transformation : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Animator _cameraAnimator;
 
-    private bool _isTransformed = false;
+    private bool _isTransformed = true;
     private Coroutine coroutine;
 
     public bool IsTransformed  => _isTransformed;
 
     public UnityAction<bool> Transformed;
 
-    private void Update()
+    private void OnClick()
     {
-        if (Input.touchCount > 0)
-        {
-            Touch[] touches = Input.touches;
-            for (int i = 0; i < touches.Length; i++)
-            {
-                if (Input.GetTouch(i).tapCount == 2)
-                {
-                    if (coroutine == null)
-                        coroutine = StartCoroutine(Transform());
-                }
-            }
-        }
+        if (coroutine == null)
+            coroutine = StartCoroutine(Transform());
     }
 
     private IEnumerator Transform()
